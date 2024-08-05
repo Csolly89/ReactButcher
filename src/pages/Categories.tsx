@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { categories } from '../data';
 
 function CategoryPage() {
@@ -18,11 +18,11 @@ function CategoryPage() {
             <h2>Cuts</h2>
             <ul>
                 {category.cuts.map(cut => (
-                    <li key={cut.name}>
+                    <Link to={`/products/cuts/${cut.id}`} key={cut.name}>
                         <h3>{cut.name}</h3>
                         <p>{cut.description}</p>
                         <p>Price: ${cut.price.toFixed(2)}</p>
-                    </li>
+                    </Link>
                 ))}
             </ul>
         </div>

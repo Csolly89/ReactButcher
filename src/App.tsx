@@ -9,6 +9,7 @@ import Products from './pages/Products';
 import Contact from './pages/Contact';
 import CategoryPage from './pages/Categories';
 import Login from './pages/Login';
+import SingleItem from './pages/Singleitem';
 
 function App() {
   // const location = useLocation();
@@ -26,6 +27,7 @@ function App() {
             <Route path="/Specials" element={<Specials />} />
             <Route path="/Products" element={<Products />} />
             <Route path="/Products/:categoryName" element ={<CategoryPage />} />
+            <Route path="/products/cuts/:cutId" element={<SingleItem />} />
             <Route path="/Contact" element={<Contact />} />
             <Route path="/Login" element={<Login />} />
           </Routes>
