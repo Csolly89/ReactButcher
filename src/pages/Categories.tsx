@@ -18,7 +18,7 @@ function CategoryPage() {
             <h2>Cuts</h2>
             <ul>
                 {category.cuts.map(cut => (
-                    <Link to={`/products/cuts/${cut.id}`} key={cut.name}>
+                    <Link to={`/Products/Cuts/${cut.id}`} key={cut.name}>
                         <h3>{cut.name}</h3>
                         <p>{cut.description}</p>
                         <p>Price: ${cut.price.toFixed(2)}</p>
