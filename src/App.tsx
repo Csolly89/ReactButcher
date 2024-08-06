@@ -18,6 +18,7 @@ export interface CartItem {
   name: string;
   price: number;
   breeds?: string[];
+  quantity: number;
   // Add any other properties your items might have
 }
 
@@ -26,7 +27,43 @@ function App() {
 
   // Function to add an item to the cart
   const addToCart = (item: CartItem) => {
-    setCart((prevCart) => [...prevCart, item]);
+    setCart((prevCart) => {
+      const existingItem = prevCart.find(cartItem => cartItem.id === item.id);
+      if (existingItem) {
+        return prevCart.map(cartItem =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + item.quantity }
+            : cartItem
+        );
+      } else {
+        return [...prevCart, item];
+      }
+    });
+  };
+  
+
+  function updateCart(id: string, change: number) {
+    setCart((prevCart) => 
+      prevCart.map(item => {
+        if (item.id === id) {
+          // Calculate the new quantity
+          const newQuantity = item.quantity + change;
+  
+          // Ensure the quantity is between 1 and 100
+          return {
+            ...item,
+            quantity: Math.min(Math.max(newQuantity, 1), 100),
+          };
+        }
+        return item;
+      })
+    );
+  }
+  
+  
+  
+  const removeFromCart = (id: string) => {
+    setCart(prevCart => prevCart.filter(item => item.id !== id));
   };
 
   return (
@@ -41,10 +78,10 @@ function App() {
             <Route path="/Specials" element={<Specials />} />
             <Route path="/Products" element={<Products />} />
             <Route path="/Products/:categoryName" element ={<CategoryPage />} />
-            <Route path="/Products/Cuts/:cutId" element={<SingleItem addToCart={addToCart}/>} />
+            <Route path="/Products/Cuts/:cutId" element={<SingleItem addToCart={addToCart} updateCart={updateCart}/>} />
             <Route path="/Contact" element={<Contact />} />
             <Route path="/Login" element={<Login />} />
-            <Route path="/Cart" element={<Cart cart={cart} />} />
+            <Route path="/Cart" element={<Cart cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} />} />
           </Routes>
         </div>
       </main>

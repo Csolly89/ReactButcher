@@ -40,11 +40,11 @@ const HeroNav: React.FC<HeroNavProps> = ({ cartLength }) => {
                     <Link to={'/Cart'} className='font-Body mr-10'>Cart({cartLength})</Link>
                 </div>
             ) : (
-                <div className='w-full h-14 md:flex flex-row bg-background-50 fixed top-0'>
-                    <Link to={'/'} className='font-Title text-5xl text-text-950 text-center'>Barn & Blade Butchers</Link>
+                <div className='w-full h-14 items-center md:flex flex-row justify-center text-center bg-background-50 fixed top-0'>
+                    <Link to={'/'} className='font-Title text-5xl text-text-950'>Barn & Blade Butchers</Link>
                     <div> 
-                        <Link to={'/Login'} className='font-Body text-text-950 '>Login</Link>
-                        <Link to={'/Cart'} className='font-Body text-text-950 '>Cart({cartLength})</Link>
+                    <Link to={'/Login'} className='font-Body text-text-950 '>Login</Link>
+                    <Link to={'/Cart'} className='font-Body text-text-950 '>Cart({cartLength})</Link>
                     </div>
                 </div>
             )}
