@@ -19,12 +19,6 @@ interface PortionSize {
     price: number;
 }
 
-// interface Breed {
-//     name: string;
-//     portionSizes: PortionSize[];
-// }
-
-// Beef category with breeds and cuts
 const beefCategory: Category = {
     name: "Beef",
     id: 1,

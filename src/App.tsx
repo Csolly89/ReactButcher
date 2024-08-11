@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 
 import Hero from './components/Hero';
@@ -12,6 +12,7 @@ import CategoryPage from './pages/Categories';
 import Login from './pages/Login';
 import SingleItem from './pages/Singleitem';
 import Cart from './pages/Cart';
+import VertNav from './components/VertNav';
 
 export interface CartItem {
   id: string;
@@ -24,6 +25,8 @@ export interface CartItem {
 
 
 function App() {
+  const location = useLocation();
+  const showMargin = location.pathname !== '/';
   const [cart, setCart] = useState<CartItem[]>([]);
 
   // Function to add an item to the cart
@@ -42,7 +45,6 @@ function App() {
     });
   };
   
-
   function updateCart(id: string, change: number) {
     setCart((prevCart) => 
       prevCart.map(item => {
@@ -61,21 +63,19 @@ function App() {
     );
   }
   
-  
-  
   const removeFromCart = (id: string) => {
     setCart(prevCart => prevCart.filter(item => item.id !== id));
   };
 
   return (
-    <Router>
       <main>
         <HeroNav cartLength={cart.length} />
         <Notification />
-        <div className='mt-[6rem]'>
+        <VertNav />
+        <div className={`mt-[6rem] ${showMargin ? 'ml-[6rem]' : ''}`}>
           <Routes>
             <Route path="/" element={<Hero />} />
-            <Route path="/About" element={<About />} />
+            <Route path="/About" element={<About  />} />
             <Route path="/Specials" element={<Specials />} />
             <Route path="/Products" element={<Products />} />
             <Route path="/Products/:categoryName" element ={<CategoryPage />} />
@@ -86,7 +86,6 @@ function App() {
           </Routes>
         </div>
       </main>
-    </Router>
   )
 }
 

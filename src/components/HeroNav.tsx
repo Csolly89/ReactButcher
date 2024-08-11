@@ -1,4 +1,8 @@
 import {Link , useLocation} from 'react-router-dom';
+interface HeroNavProps {
+    cartLength: number;
+}
+
 
 const navLinks = [
     {
@@ -18,9 +22,6 @@ const navLinks = [
         path: "/Contact",
     },
 ];
-interface HeroNavProps {
-    cartLength: number;
-    }
 
 const HeroNav: React.FC<HeroNavProps> = ({ cartLength }) => {
     const location = useLocation()
