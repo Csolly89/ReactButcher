@@ -8,9 +8,20 @@ interface SingleItemProps {
     updateCart: (id: string, change: number) => void;
 }
 
+interface Breed {
+    name: string;
+    portionSizes: PortionSize[];
+}
+interface PortionSize {
+    size: number;
+    price: number;
+}
+
 const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
     const { cutId } = useParams<{ cutId?: string }>();
     const [quantity, setQuantity] = useState(1);
+    const [selectedBreed, setSelectedBreed] = useState<Breed | null>(null);
+    const [selectedPortionSize, setSelectedPortionSize] = useState<PortionSize | null>(null);
 
     if (!cutId) {
         return <div>Cut ID is missing</div>;
@@ -30,59 +41,107 @@ const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
     }
 
     const handleAddToCart = () => {
+        if (!selectedBreed || !selectedPortionSize) {
+            alert("Please select a breed and portion size before adding to cart.");
+            return;
+        }
+
         const cartItem: CartItem = {
             id: cut.id.toString(),
-            name: cut.name,
-            price: cut.price,
+            name: `${cut.name} (${selectedBreed.name}, ${selectedPortionSize.size}oz)`,
             quantity,
-            breeds: cut.breeds,
+            breed: selectedBreed.name,
+            portionSize: selectedPortionSize.size,
+            price: selectedPortionSize.price,
         };
         addToCart(cartItem);
     };
 
     const handleQuantityChange = (change: number) => {
-        // Ensure that the item is already in the cart
-        updateCart(cut.id.toString(), change);
+        setQuantity(prev => {
+            const newQuantity = prev + change;
+            if (newQuantity >= 1 && newQuantity <= 100) {
+                updateCart(cut.id.toString(), change);
+                return newQuantity;
+            }
+            return prev;
+        });
     };
 
     return (
-        <div>
+        <div className='m-5 border-2 border-background-50 bg-background-300 text-text-950'>
             <h1>{cut.name}</h1>
             <p>{cut.description}</p>
-            <p>Price: ${cut.price.toFixed(2)}</p>
-            <div>
+
+            {cut.breeds && (
+                <div>
+                    <h2>Select Breed</h2>
+                    <div className="flex gap-2">
+                        {cut.breeds.map((breed, index) => (
+                            <button
+                                key={index}
+                                className={`p-2 border ${selectedBreed === breed ? 'bg-primary-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => {
+                                    setSelectedBreed(breed);
+                                    setSelectedPortionSize(null); // Reset portion size when breed changes
+                                }}
+                            >
+                                {breed.name}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {selectedBreed && selectedBreed.portionSizes && (
+                <div className='mt-4'>
+                    <h2>Select Portion Size</h2>
+                    <div className="flex gap-2">
+                        {selectedBreed.portionSizes.map((size, index) => (
+                            <button
+                                key={index}
+                                className={`p-2 border ${selectedPortionSize === size ? 'bg-primary-500 text-white' : 'bg-white text-black'}`}
+                                onClick={() => setSelectedPortionSize(size)}
+                            >
+                                {size.size}oz (${size.price.toFixed(2)})
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {cut.breeds === undefined && (
+                <div className='mt-4'>
+                    <h2>Select Portion Size (for chicken)</h2>
+                    <p>No breeds available. Select a portion size directly if applicable.</p>
+                    <div className="flex gap-2">
+                        {/* Render portion sizes if chicken or similar item with portion sizes directly */}
+                    </div>
+                </div>
+            )}
+
+            <div className='mt-4'>
                 <h2>Quantity</h2>
-                <span>{quantity}</span>
-                <button className="text-background-50 bg-primary-500 rounded-md border-background-700 border-2 w-16 h-6 flex  justify-center items-center m-2 " 
-                    onClick={() => {
-                        setQuantity(prev => Math.max(prev - 1, 1));
-                        handleQuantityChange(-1); // Update quantity in the cart
-                    }}
+                <button 
+                    className="text-background-50 bg-primary-500 rounded-md border-background-700 border-2 w-16 h-6 flex justify-center items-center m-2" 
+                    onClick={() => handleQuantityChange(-1)}
                     disabled={quantity <= 1}
                 >
                     -
                 </button>
-                <button className="text-background-50 bg-primary-500 rounded-md border-background-700 border-2 w-16 h-6 flex  justify-center items-center m-2 " 
-                    onClick={() => {
-                        setQuantity(prev => Math.min(prev + 1, 100));
-                        handleQuantityChange(1); // Update quantity in the cart
-                    }}
+                <span>{quantity}</span>
+                <button 
+                    className="text-background-50 bg-primary-500 rounded-md border-background-700 border-2 w-16 h-6 flex justify-center items-center m-2" 
+                    onClick={() => handleQuantityChange(1)}
                     disabled={quantity >= 100}
                 >
                     +
                 </button>
             </div>
-            <button onClick={handleAddToCart}>Add to cart</button>
-            {cut.breeds && cut.breeds.length > 0 && (
-                <div>
-                    <h2>Available Breeds</h2>
-                    <ul>
-                        {cut.breeds.map((breed, index) => (
-                            <li key={index}>{breed}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+
+            <button onClick={handleAddToCart} className="mt-4 bg-primary-500 text-white p-2 rounded">
+                Add to cart
+            </button>
         </div>
     );
 }

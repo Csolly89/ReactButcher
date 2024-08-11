@@ -16,11 +16,12 @@ import Cart from './pages/Cart';
 export interface CartItem {
   id: string;
   name: string;
-  price: number;
-  breeds?: string[];
   quantity: number;
-  // Add any other properties your items might have
+  breed?: string; // Optional, only needed for items with breeds
+  portionSize?: number; // Optional, only needed for items with portion sizes
+  price: number;
 }
+
 
 function App() {
   const [cart, setCart] = useState<CartItem[]>([]);

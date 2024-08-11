@@ -12,16 +12,17 @@ function CategoryPage() {
     }
 
     return (
-        <div>
+        <div className='m-5 border-2 border-background-50 bg-background-300 text-text-950'>
             <h1>{category.name}</h1>
             <p>{category.desc}</p>
-            <h2>Cuts</h2>
-            <ul>
+            <ul >
                 {category.cuts.map(cut => (
-                    <Link to={`/Products/Cuts/${cut.id}`} key={cut.name}>
+                    <Link to={`/Products/Cuts/${cut.id}`} key={cut.name} >
+                        <div className='m-5 border-2 border-primary-700 bg-background-500 text-text-950'>
+
                         <h3>{cut.name}</h3>
                         <p>{cut.description}</p>
-                        <p>Price: ${cut.price.toFixed(2)}</p>
+                        </div>
                     </Link>
                 ))}
             </ul>
