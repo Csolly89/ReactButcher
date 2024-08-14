@@ -1,6 +1,6 @@
 function About() {
     return (
-        <div className="m-0">
+        <div className="ml-[6rem]">
             About the company
         </div>
     );

@@ -26,7 +26,7 @@ export interface CartItem {
 
 function App() {
   const location = useLocation();
-  const showMargin = location.pathname !== '/';
+  const showNavMargin = location.pathname !== '/';
   const [cart, setCart] = useState<CartItem[]>([]);
 
   // Function to add an item to the cart
@@ -72,7 +72,7 @@ function App() {
         <HeroNav cartLength={cart.length} />
         <Notification />
         <VertNav />
-        <div className={`mt-[6rem] ${showMargin ? 'ml-[6rem]' : ''}`}>
+        <div className='mt-[6rem] '>
           <Routes>
             <Route path="/" element={<Hero />} />
             <Route path="/About" element={<About  />} />

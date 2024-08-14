@@ -34,7 +34,7 @@ const Cart: React.FC<CartProps> = ({ cart, updateCart, removeFromCart }) => {
     };
 
     return (
-        <div>
+        <div className="ml-[6rem]">
             <h1>Cart Page</h1>
             {Object.keys(cartSummary).length > 0 ? (
                 <table>

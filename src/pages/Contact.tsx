@@ -1,6 +1,6 @@
 function Contact() {
     return (
-        <div>
+        <div className="ml-[6rem]">
             Here you can contact me
         </div>
     );

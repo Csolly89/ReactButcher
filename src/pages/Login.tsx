@@ -1,6 +1,6 @@
 function Login() {
     return (
-        <div>
+        <div className="ml-[6rem]">
             Here you can login
         </div>
     );

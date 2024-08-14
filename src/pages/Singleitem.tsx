@@ -33,6 +33,8 @@ const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
         setDiscountedCategories(discountedData);
     }, []);
 
+
+
     if (!cutId) {
         return <div>Cut ID is missing</div>;
     }
@@ -46,6 +48,13 @@ const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
         .flatMap(category => category.cuts)
         .find(cut => cut.id === cutIdNumber);
 
+    useEffect(() => {
+        if (cut?.breeds?.length) {
+            setSelectedBreed(cut.breeds[0]);
+            setSelectedPortionSize(cut.breeds[0].portionSizes[0]);
+        }
+    }, [cut]);
+
     if (!cut) {
         return <div>Cut not found</div>;
     }
@@ -56,8 +65,10 @@ const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
             return;
         }
 
+        const uniqueKey = `${cut.id}-${selectedBreed.name}-${selectedPortionSize.size}`;
+
         const cartItem: CartItem = {
-            id: cut.id.toString(),
+            id: uniqueKey,
             name: `${cut.name} (${selectedBreed.name}, ${selectedPortionSize.size}oz)`,
             quantity,
             breed: selectedBreed.name,
@@ -79,7 +90,7 @@ const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
     };
 
     return (
-        <div className='m-5 border-2 border-background-50 bg-background-300 text-text-950'>
+        <div className='m-5 ml-[6rem] border-2 border-background-50 bg-background-300 text-text-950'>
             <h1>{cut.name}</h1>
             <p>{cut.description}</p>
 
@@ -93,7 +104,7 @@ const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
                                 className={`p-2 border ${selectedBreed === breed ? 'bg-primary-500 text-white' : 'bg-white text-black'}`}
                                 onClick={() => {
                                     setSelectedBreed(breed);
-                                    setSelectedPortionSize(null); // Reset portion size when breed changes
+                                    // setSelectedPortionSize(breed.portionSizes[0]); // Automatically select the first portion size
                                 }}
                             >
                                 {breed.name}
@@ -103,7 +114,7 @@ const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
                 </div>
             )}
 
-            {selectedBreed && selectedBreed.portionSizes && (
+            {selectedBreed && (
                 <div className='mt-4'>
                     <h2>Select Portion Size</h2>
                     <div className="flex gap-2">
@@ -124,16 +135,16 @@ const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
 
             <div className='mt-4'>
                 <h2>Quantity</h2>
-                <button 
-                    className="text-background-50 bg-primary-500 rounded-md border-background-700 border-2 w-16 h-6 flex justify-center items-center m-2" 
+                <button
+                    className="text-background-50 bg-primary-500 rounded-md border-background-700 border-2 w-16 h-6 flex justify-center items-center m-2"
                     onClick={() => handleQuantityChange(-1)}
                     disabled={quantity <= 1}
                 >
                     -
                 </button>
                 <span>{quantity}</span>
-                <button 
-                    className="text-background-50 bg-primary-500 rounded-md border-background-700 border-2 w-16 h-6 flex justify-center items-center m-2" 
+                <button
+                    className="text-background-50 bg-primary-500 rounded-md border-background-700 border-2 w-16 h-6 flex justify-center items-center m-2"
                     onClick={() => handleQuantityChange(1)}
                     disabled={quantity >= 100}
                 >

@@ -12,7 +12,7 @@ function CategoryPage() {
     }
 
     return (
-        <div className='m-5 border-2 border-background-50 bg-background-300 text-text-950'>
+        <div className='m-5 ml-[6rem] border-2 border-background-50 bg-background-300 text-text-950'>
             <h1>{category.name}</h1>
             <p>{category.desc}</p>
             <ul >

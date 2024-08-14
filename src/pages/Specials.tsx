@@ -23,8 +23,8 @@ const dailies = [
 
 function Specials() {
     return (
-        <div>
-        <div className='flex flex-row justify-center gap-5 flex-1 ml-[3rem]'>
+        <div className="ml-[6rem]">
+        <div className='flex flex-row justify-center gap-5 flex-1 '>
                         {dailies.map(d => (
                             <div key={d.day}>
                             <h1>{d.day}</h1>

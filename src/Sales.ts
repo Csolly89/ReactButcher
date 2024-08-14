@@ -1,4 +1,4 @@
-import { categories , Category } from "./data";
+import { Category } from "./data";
 
 export const applyDiscounts = (categories: Category[]): Category[] => {
     const today = new Date().getDay(); // Sunday is 0, Monday is 1, etc.
