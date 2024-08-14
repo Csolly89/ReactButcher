@@ -3,7 +3,7 @@ import { categories } from "../data";
 
 function Products() {
     return (
-        <div className='flex flex-row gap-10'>
+        <div className='flex flex-row gap-10 '>
             {categories.map((category)=> (
                 <Link to={`/Products/${category.name}`}key={category.id}>
                     <h1>{category.name}</h1>

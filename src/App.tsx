@@ -18,8 +18,8 @@ export interface CartItem {
   id: string;
   name: string;
   quantity: number;
-  breed?: string; // Optional, only needed for items with breeds
-  portionSize?: number; // Optional, only needed for items with portion sizes
+  breed: string; 
+  portionSize: number; 
   price: number;
 }
 

@@ -1,32 +1,32 @@
 const dailies = [
     {
-        day: "Monday" ,
-        deal:  "20% off all ground meats, including beef, pork, and chicken. Perfect for making burgers, meatballs, or sauces.",
+        day: "Veterans Monday" ,
+        deal:  "20% off the entire shop for all veterans.",
     },
     {
-        day: "Tuesday" ,
+        day: "Beefing Tuesday" ,
         deal: "Buy one get one 50% off on premium steaks like ribeye or filet mignon. Ideal for a special dinner or grilling.",
     },
     {
-        day: "Wednesday" ,
-        deal: "15% off all wild game meats, such as venison, elk, or boar. Great for those looking to try something different.",
+        day: "Grilling Wednesday" ,
+        deal: "15% off all pork chop's .",
     },
     {
-        day: "Thursday" ,
-        deal:   "10% off on bulk purchases of sausages and deli meats. A good deal for stocking up for parties or quick meals.",
+        day: "Lean Thursday" ,
+        deal:   "10% off on Chicken products. A good deal for stocking up for parties or quick meals.",
     },
     {
-        day: "Friday" ,
-        deal:   "25% off all roasts, including beef, pork, and lamb. Perfect for preparing a big family meal or weekend feast."
+        day: "BBq Friday" ,
+        deal:   "25% off all roasts & ribs, including beef and pork products. Perfect for preparing a big family meal or weekend feast."
     },
 ]
 
 function Specials() {
     return (
         <div>
-        <div className='flex flex-row justify-center gap-5 flex-1 mr-[10rem]'>
+        <div className='flex flex-row justify-center gap-5 flex-1 ml-[3rem]'>
                         {dailies.map(d => (
-                            <div>
+                            <div key={d.day}>
                             <h1>{d.day}</h1>
                             <p> {d.deal} </p>
                             </div>

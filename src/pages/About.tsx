@@ -1,6 +1,6 @@
 function About() {
     return (
-        <div>
+        <div className="m-0">
             About the company
         </div>
     );

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { categories } from '../data';
+import { applyDiscounts } from '../Sales';
 import { CartItem } from '../App';
 
 interface SingleItemProps {
@@ -12,9 +13,11 @@ interface Breed {
     name: string;
     portionSizes: PortionSize[];
 }
+
 interface PortionSize {
     size: number;
     price: number;
+    salePrice?: number;
 }
 
 const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
@@ -22,6 +25,13 @@ const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
     const [quantity, setQuantity] = useState(1);
     const [selectedBreed, setSelectedBreed] = useState<Breed | null>(null);
     const [selectedPortionSize, setSelectedPortionSize] = useState<PortionSize | null>(null);
+    const [discountedCategories, setDiscountedCategories] = useState(categories);
+
+    useEffect(() => {
+        // Apply discounts and update state
+        const discountedData = applyDiscounts(categories);
+        setDiscountedCategories(discountedData);
+    }, []);
 
     if (!cutId) {
         return <div>Cut ID is missing</div>;
@@ -32,7 +42,7 @@ const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
         return <div>Invalid Cut ID</div>;
     }
 
-    const cut = categories
+    const cut = discountedCategories
         .flatMap(category => category.cuts)
         .find(cut => cut.id === cutIdNumber);
 
@@ -52,7 +62,7 @@ const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
             quantity,
             breed: selectedBreed.name,
             portionSize: selectedPortionSize.size,
-            price: selectedPortionSize.price,
+            price: selectedPortionSize.salePrice || selectedPortionSize.price,
         };
         addToCart(cartItem);
     };
@@ -103,19 +113,11 @@ const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
                                 className={`p-2 border ${selectedPortionSize === size ? 'bg-primary-500 text-white' : 'bg-white text-black'}`}
                                 onClick={() => setSelectedPortionSize(size)}
                             >
-                                {size.size}oz (${size.price.toFixed(2)})
+                                {size.size}oz -
+                                <span className={size.salePrice ? 'line-through' : ''}>${size.price.toFixed(2)}</span>
+                                {size.salePrice && <span> ${size.salePrice.toFixed(2)}</span>}
                             </button>
                         ))}
-                    </div>
-                </div>
-            )}
-
-            {cut.breeds === undefined && (
-                <div className='mt-4'>
-                    <h2>Select Portion Size (for chicken)</h2>
-                    <p>No breeds available. Select a portion size directly if applicable.</p>
-                    <div className="flex gap-2">
-                        {/* Render portion sizes if chicken or similar item with portion sizes directly */}
                     </div>
                 </div>
             )}
