@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
 
 import Hero from './components/Hero';
@@ -25,8 +25,6 @@ export interface CartItem {
 
 
 function App() {
-  const location = useLocation();
-  const showNavMargin = location.pathname !== '/';
   const [cart, setCart] = useState<CartItem[]>([]);
 
   // Function to add an item to the cart
@@ -69,22 +67,24 @@ function App() {
 
   return (
       <main>
-        <HeroNav cartLength={cart.length} />
-        <Notification />
-        <VertNav />
-        <div className='mt-[6rem] '>
-          <Routes>
-            <Route path="/" element={<Hero />} />
-            <Route path="/About" element={<About  />} />
-            <Route path="/Specials" element={<Specials />} />
-            <Route path="/Products" element={<Products />} />
-            <Route path="/Products/:categoryName" element ={<CategoryPage />} />
-            <Route path="/Products/Cuts/:cutId" element={<SingleItem addToCart={addToCart} updateCart={updateCart}/>} />
-            <Route path="/Contact" element={<Contact />} />
-            <Route path="/Login" element={<Login />} />
-            <Route path="/Cart" element={<Cart cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} />} />
-          </Routes>
-        </div>
+        <Router>
+          <HeroNav cartLength={cart.length} />
+          <Notification />
+          <VertNav />
+          <div className='mt-[6rem]'>
+            <Routes>
+              <Route path="/" element={<Hero />} />
+              <Route path="/About" element={<About  />} />
+              <Route path="/Specials" element={<Specials />} />
+              <Route path="/Products" element={<Products />} />
+              <Route path="/Products/:categoryName" element ={<CategoryPage />} />
+              <Route path="/Products/Cuts/:cutId" element={<SingleItem addToCart={addToCart} updateCart={updateCart}/>} />
+              <Route path="/Contact" element={<Contact />} />
+              <Route path="/Login" element={<Login />} />
+              <Route path="/Cart" element={<Cart cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} />} />
+            </Routes>
+          </div>
+        </Router>
       </main>
   )
 }

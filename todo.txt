@@ -1,0 +1,5 @@
+User Login state and conditional rendering of applied discount on single item page..
+switch case reading specific cut.id's for either oz, each, or other serving sizes for portionSizes
+MAKE IT PRETTY DAMNIT
+
+fill in hero page/ about / contact page with filler .. doesn't need to be functional.
