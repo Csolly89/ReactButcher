@@ -26,6 +26,7 @@ export interface CartItem {
 
 function App() {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [user, setUser] = useState(false)
 
   // Function to add an item to the cart
   const addToCart = (item: CartItem) => {
@@ -65,10 +66,14 @@ function App() {
     setCart(prevCart => prevCart.filter(item => item.id !== id));
   };
 
+  const handleLogin = (status: boolean) => {
+    setUser(status);
+  };
+
   return (
       <main>
         <Router>
-          <HeroNav cartLength={cart.length} />
+          <HeroNav onLogout={() => handleLogin(false)} user={user} cartLength={cart.length} />
           <Notification />
           <VertNav />
           <div className='mt-[6rem]'>
@@ -78,9 +83,9 @@ function App() {
               <Route path="/Specials" element={<Specials />} />
               <Route path="/Products" element={<Products />} />
               <Route path="/Products/:categoryName" element ={<CategoryPage />} />
-              <Route path="/Products/Cuts/:cutId" element={<SingleItem addToCart={addToCart} updateCart={updateCart}/>} />
+              <Route path="/Products/Cuts/:cutId" element={<SingleItem user={user} addToCart={addToCart} updateCart={updateCart}/>} />
               <Route path="/Contact" element={<Contact />} />
-              <Route path="/Login" element={<Login />} />
+              <Route path="/Login" element={<Login onLogin={handleLogin}/>} />
               <Route path="/Cart" element={<Cart cart={cart} updateCart={updateCart} removeFromCart={removeFromCart} />} />
             </Routes>
           </div>

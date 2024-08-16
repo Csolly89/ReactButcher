@@ -7,6 +7,7 @@ import { CartItem } from '../App';
 interface SingleItemProps {
     addToCart: (item: CartItem) => void;
     updateCart: (id: string, change: number) => void;
+    user: boolean;
 }
 
 interface Breed {
@@ -20,7 +21,7 @@ interface PortionSize {
     salePrice?: number;
 }
 
-const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
+const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart, user }) => {
     const { cutId } = useParams<{ cutId?: string }>();
     const [quantity, setQuantity] = useState(1);
     const [selectedBreed, setSelectedBreed] = useState<Breed | null>(null);
@@ -125,8 +126,14 @@ const SingleItem: React.FC<SingleItemProps> = ({ addToCart, updateCart }) => {
                                 onClick={() => setSelectedPortionSize(size)}
                             >
                                 {size.size}oz -
-                                <span className={size.salePrice ? 'line-through' : ''}>${size.price.toFixed(2)}</span>
-                                {size.salePrice && <span> ${size.salePrice.toFixed(2)}</span>}
+                                {user ? (
+                                    <>
+                                        <span className={size.salePrice ? 'line-through' : ''}>${size.price.toFixed(2)}</span>
+                                        {size.salePrice && <span> ${size.salePrice.toFixed(2)}</span>}
+                                    </>
+                                ) : (
+                                    <span>${size.price.toFixed(2)}</span>
+                                )}
                             </button>
                         ))}
                     </div>
